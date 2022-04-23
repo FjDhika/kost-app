@@ -1,0 +1,71 @@
+################################################################################
+# Main docker configuration for Docker.
+#
+################################################################################
+version: '3.8'
+services:
+    ############################################################################
+    #
+    ############################################################################
+    app:
+      container_name: app_kost
+      build:
+        context: ./
+        dockerfile: app.dockerfile
+      volumes:
+        - ./:/var/www/
+        - ./storage:/var/www/storage
+        - ${HOME}/.composer:/root/.composer
+      environment:
+        - "DB_HOST=database"
+        - "REDIS_HOST=cache"
+      networks:
+        - portal
+
+    ############################################################################
+    #
+    ############################################################################
+    web:
+      container_name: web_kost
+      build:
+        context: ./
+        dockerfile: web.dockerfile
+      volumes:
+        - ./storage/logs/:/var/log/nginx
+      ports:
+        - 8990:80
+      networks:
+        - portal
+
+    ############################################################################
+    #
+    ############################################################################
+    database:
+      container_name: database_kost
+      image: mysql:latest
+      command: [--default-authentication-plugin=mysql_native_password]
+      volumes:
+        - dbdata:/var/lib/mysql
+      environment:
+        - "MYSQL_ROOT_PASSWORD=Kost@)@)"
+        - "MYSQL_DATABASE=Kost"
+        - "MYSQL_USER=Kost"
+        - "MYSQL_PASSWORD=Kost"
+      ports:
+        - 8991:3306
+      networks:
+        - portal
+    
+    cache:
+      image: redis:3.0-alpine
+    
+volumes:
+  dbdata:
+
+networks:
+  portal:
+    driver: bridge
+  is_internal:
+    external: true
+    
+
