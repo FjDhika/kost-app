@@ -4,6 +4,7 @@ namespace App\Api\Modules\Auth\Entities\Repositories;
 
 use App\Api\Modules\Auth\Entities\Interfaces\AuthRepositoryInterface;
 use App\Api\Modules\Auth\Model\User;
+use App\Api\Modules\Role\Entities\Constant\RoleIdConstant;
 use App\Traits\ApiResponse;
 use Exception;
 use Illuminate\Http\Request;
@@ -23,11 +24,17 @@ class AuthRepository implements AuthRepositoryInterface
         $this->user = $user;
     }
 
-    public function register(Request $request)
+    public function register(Request $request, int $role_id)
     {
         $registered = $this->user->fill($request->all());
         $registered->password = bcrypt($registered->password);
-        $registered->role_id = 1;
+        $registered->role_id = $role_id;
+
+        if ($role_id == RoleIdConstant::PREMIUM) {
+            $registered->credit = 40;
+        } else if ($role_id == RoleIdConstant::REGULER) {
+            $registered->credit = 20;
+        }
 
         try {
             $registered->save();

@@ -3,6 +3,7 @@
 namespace App\Api\Modules\Auth\Controllers;
 
 use App\Api\Modules\Auth\Entities\Repositories\AuthRepository;
+use App\Api\Modules\Role\Entities\Constant\RoleIdConstant;
 use App\Http\Controllers\Controller;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
@@ -23,7 +24,7 @@ class AuthController extends Controller
         $this->authRepo = $authRepo;
     }
 
-    public function register(Request $request)
+    private function register(Request $request, int $role_id)
     {
         $rules = [
             'name' => 'required',
@@ -42,7 +43,25 @@ class AuthController extends Controller
             return $this->BadRequestError($validator->errors());
         }
 
-        $result = $this->authRepo->register($request);
+        $result = $this->authRepo->register($request, $role_id);
+        return $result;
+    }
+
+    public function registerOwner(Request $request)
+    {
+        $result = $this->register($request, RoleIdConstant::OWNER);
+        return $result;
+    }
+
+    public function registerRegular(Request $request)
+    {
+        $result = $this->register($request, RoleIdConstant::REGULER);
+        return $result;
+    }
+
+    public function registerPremium(Request $request)
+    {
+        $result = $this->register($request, RoleIdConstant::PREMIUM);
         return $result;
     }
 
