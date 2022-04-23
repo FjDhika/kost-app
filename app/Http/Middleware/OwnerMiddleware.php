@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Api\Modules\Role\Entities\Constant\RoleIdConstant;
 use App\Traits\ApiResponse;
 use Closure;
 use Illuminate\Http\Request;
@@ -19,7 +20,7 @@ class OwnerMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->role_id == 1) {
+        if (Auth::check() && Auth::user()->role_id == RoleIdConstant::OWNER) {
             return $next($request);
         }
         return $this->UnauthorizeError('Not Allowed');
