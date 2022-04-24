@@ -48,8 +48,12 @@ class AuthRepository implements AuthRepositoryInterface
 
     public function login(Request $request)
     {
-        $token = $this->assignJwt($request);
-        return $this->SuccessResponse('login success', ['token' => $token]);
+        try {
+            $token = $this->assignJwt($request);
+            return $this->SuccessResponse('login success', ['token' => $token]);
+        } catch (\Throwable $th) {
+            return $this->UnauthorizeError("Login Failed please check your email and password");
+        }
     }
 
     private function assignJwt(Request $request)
