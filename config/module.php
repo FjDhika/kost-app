@@ -4,6 +4,7 @@
 return  [
     'modules' => [
         'Auth',
-        'Kost'
+        'Kost',
+        'Availability'
     ]
 ];
