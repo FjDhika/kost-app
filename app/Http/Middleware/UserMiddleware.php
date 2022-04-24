@@ -8,7 +8,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class OwnerMiddleware
+class UserMiddleware
 {
     use ApiResponse;
     /**
@@ -20,7 +20,7 @@ class OwnerMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->role_id == RoleIdConstant::OWNER) {
+        if (Auth::check() && (Auth::user()->role_id == RoleIdConstant::PREMIUM || Auth::user()->role_id == RoleIdConstant::REGULER)) {
             return $next($request);
         }
         return $this->UnauthorizeError('Not Allowed');
