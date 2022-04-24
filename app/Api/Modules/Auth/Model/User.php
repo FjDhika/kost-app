@@ -2,11 +2,13 @@
 
 namespace App\Api\Modules\Auth\Model;
 
+use App\Api\Modules\Kost\Models\Kost;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
@@ -51,6 +53,16 @@ class User extends Authenticatable implements JWTSubject
     public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class, 'role_id', 'id');
+    }
+
+    /**
+     * Get all of the kosts for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function kosts(): HasMany
+    {
+        return $this->hasMany(Kost::class, 'user_id', 'id');
     }
 
     /**
