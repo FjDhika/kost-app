@@ -10,6 +10,7 @@
 -   Run laravel migration with `php artisan migrate`.
 -   Run laravel seeder with `php artisan db:seed`
 -   At this point the project already running you can check it at [http://localhost:8990/](http://localhost:8990/).
+-   To exit from docker bash use `exit` command.
 -   To Stop docker you can use `ctrl+c`, if its running at background you can use `docker-compose stop`.
 
 ## Run The App
@@ -24,6 +25,7 @@
 
 -   Enter docker bash with `docker exec -it app_kost /bin/bash`.
 -   Run scheduler with `php artisan scheduler:work`.
+-   To exit from docker bash use `exit` command.
 
 ## Default User
 
