@@ -21,7 +21,7 @@ class Kernel extends ConsoleKernel
             ->withoutOverlapping()
             ->timezone('Asia/Jakarta')
             ->runInBackground()
-            ->everyFiveMinutes();
+            ->monthly();
     }
 
     /**
